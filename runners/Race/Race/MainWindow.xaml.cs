@@ -89,7 +89,7 @@ namespace Race
             string disp = "";
             for (int i = 0; i < arr.Length; i++)
             {
-                disp += ShowForm(i)+"\n";
+                disp += arr[i].RunnerName +"\n";
             }
             txtDisp.Text = disp;
         }
