@@ -24,7 +24,7 @@ namespace Race
 
     public partial class MainWindow : Window
     {
-        Dictionary<string,Runner> RunBoi = new Dictionary<string , Runner>();
+        Dictionary<string,Runner> EnteredRunner = new Dictionary<string , Runner>();
 
         public MainWindow()
         {
@@ -32,73 +32,44 @@ namespace Race
             
         }
 
-        private void btnAdd_Click(object sender, RoutedEventArgs e)
+        
+
+        public string ShowInfo(string name)
         {
-            if (!(txtAge.Text.Equals(null) || txtName.Text.Equals(null) || txtTimeMin.Text.Equals(null) || txtTimeSec.Text.Equals(null) || int.TryParse(txtTimeMin.Text,out int res) == false
-                || int.TryParse(txtTimeSec.Text, out int res1) == false || int.TryParse(txtAge.Text, out int res2)== false || int.Parse(txtTimeSec.Text) > 60 ))
-            {
-
-
-                Runner rn = new Runner();
-                rn.setRunner(txtName.Text, int.Parse(txtTimeMin.Text), int.Parse(txtTimeSec.Text), int.Parse(txtAge.Text));
-                RunBoi.Add(rn.RunnerName,rn);
-                txtName.Text = "";
-                txtTimeMin.Text = "";
-                txtTimeSec.Text = "";
-                txtAge.Text = "";
-            }
-            else
-            {
-                MessageBox.Show("There was an Error. Please check values you have entered.");
-            }
+            return "" + EnteredRunner[name].RunnerName + "(" + EnteredRunner[name].RunnerTimeMin + ":" + EnteredRunner[name].RunnerTimeSec + ")";
         }
-
-        public string ShowForm(string name)
-        {
-            return "" + RunBoi[name].RunnerName + "(" + RunBoi[name].RunnerTimeMin + ":" + RunBoi[name].RunnerTimeSec + ")";
-        }
-        private string ShowForm(Runner rn)
+        private string ShowInfo(Runner rn)
         {
             return "" + rn.RunnerName + "(" + rn.RunnerTimeMin + ":" + rn.RunnerTimeSec + ")";
         }
         private Runner[] sortLst()
         {
-            Runner[] lst = new Runner[RunBoi.Count];
-            RunBoi.Values.CopyTo(lst, 0);
-            Runner temp;
+            Runner[] lst = new Runner[EnteredRunner.Count];
+            EnteredRunner.Values.CopyTo(lst, 0);
+            Runner temporary;
 
-            for (int write = 0; write < lst.Length; write++)
+            for (int w = 0; w < lst.Length; w++)
             {
-                for (int sort = 0; sort < lst.Length - 1; sort++)
+                for (int s = 0; s < lst.Length - 1; s++)
                 {
-                    if (lst[sort].RunnerTimeMin > lst[sort + 1].RunnerTimeMin && lst[sort].RunnerTimeSec > lst[sort + 1].RunnerTimeSec)
+                    if (lst[s].RunnerTimeMin > lst[s + 1].RunnerTimeMin && lst[s].RunnerTimeSec > lst[s + 1].RunnerTimeSec)
                     {
-                        temp = lst[sort + 1];
-                        lst[sort + 1] = lst[sort];
-                        lst[sort] = temp;
+                        temporary = lst[s + 1];
+                        lst[s + 1] = lst[s];
+                        lst[s] = temporary;
                     }
                 }
 
             }
             return lst.ToArray();
         }
-        private void btnShowRunners_Click(object sender, RoutedEventArgs e)
-        {
-            
-            Runner[] arr = sortLst(); 
-            string disp = "";
-            for (int i = 0; i < arr.Length; i++)
-            {
-                disp += arr[i].RunnerName +"\n";
-            }
-            txtDisp.Text = disp;
-        }
+        
 
-        private int AverageMin()
+        private int AvMin()
         {
             int avg = 0;
-            Runner[] arr = new Runner[RunBoi.Count];
-            RunBoi.Values.CopyTo(arr, 0);
+            Runner[] arr = new Runner[EnteredRunner.Count];
+            EnteredRunner.Values.CopyTo(arr, 0);
             
             foreach(Runner rn in arr)
             {
@@ -107,13 +78,13 @@ namespace Race
             return avg/arr.Length;
         }
 
-        private int AverageSec()
+        private int AvSec()
         {
             int avg = 0;
             
 
-            Runner[] arr = new Runner[RunBoi.Count];
-            RunBoi.Values.CopyTo(arr, 0);
+            Runner[] arr = new Runner[EnteredRunner.Count];
+            EnteredRunner.Values.CopyTo(arr, 0);
             foreach (Runner rn in arr)
             {
                 avg += rn.RunnerTimeSec;
@@ -121,11 +92,11 @@ namespace Race
             return avg / arr.Length;
         }
 
-        private int AverageAge()
+        private int AvAge()
         {
             int avg = 0;
-            Runner[] arr = new Runner[RunBoi.Count];
-            RunBoi.Values.CopyTo(arr, 0);
+            Runner[] arr = new Runner[EnteredRunner.Count];
+            EnteredRunner.Values.CopyTo(arr, 0);
 
             foreach (Runner rn in arr)
             {
@@ -134,11 +105,11 @@ namespace Race
             return avg / arr.Length;
         }
 
-        private int bet0and15()
+        private int between_0and15()
         {
             int count = 0;
-            Runner[] arr = new Runner[RunBoi.Count];
-            RunBoi.Values.CopyTo(arr, 0);
+            Runner[] arr = new Runner[EnteredRunner.Count];
+            EnteredRunner.Values.CopyTo(arr, 0);
 
             foreach (Runner rn in arr)
             {
@@ -150,11 +121,11 @@ namespace Race
             return count;
         }
 
-        private int bet16and29()
+        private int between_16and29()
         {
             int count = 0;
-            Runner[] arr = new Runner[RunBoi.Count];
-            RunBoi.Values.CopyTo(arr, 0);
+            Runner[] arr = new Runner[EnteredRunner.Count];
+            EnteredRunner.Values.CopyTo(arr, 0);
 
             foreach (Runner rn in arr)
             {
@@ -165,11 +136,11 @@ namespace Race
             }
             return count;
         }
-        private int bet30andolder()
+        private int Is_30andolder()
         {
             int count = 0;
-            Runner[] arr = new Runner[RunBoi.Count];
-            RunBoi.Values.CopyTo(arr, 0);
+            Runner[] arr = new Runner[EnteredRunner.Count];
+            EnteredRunner.Values.CopyTo(arr, 0);
 
             foreach (Runner rn in arr)
             {
@@ -180,10 +151,10 @@ namespace Race
             }
             return count;
         }
-        private Runner Winna()
+        private Runner FirstPlace()
         {
-            Runner[] arr = new Runner[RunBoi.Count];
-            RunBoi.Values.CopyTo(arr, 0);
+            Runner[] arr = new Runner[EnteredRunner.Count];
+            EnteredRunner.Values.CopyTo(arr, 0);
 
             Runner winner = arr[0];
             for (int i = 0; i <arr.Length ; i++)
@@ -199,12 +170,43 @@ namespace Race
         private void btnAnanlyseRace_Click(object sender, RoutedEventArgs e)
         {
             string rWinner = "";
-            rWinner +="Winner: "+ ShowForm( Winna())+" Age: "+Winna().RunnerAge+"\nAverage time: "+AverageMin()+":"+AverageSec()+"\nAverage age: " + AverageAge()
-                +"\n15 or younger: " +bet0and15() + "\nBetween 16 and 29: " + bet16and29()+ "\n30 or older: " + bet30andolder() ;
+            rWinner +="Winner: "+ ShowInfo( FirstPlace())+" Age: "+ FirstPlace().RunnerAge+"\nAverage time: "+AvMin()+":"+AvSec()+"\nAverage age: " + AvAge()
+                +"\n15 or younger: " +between_0and15() + "\nBetween 16 and 29: " + between_16and29()+ "\n30 or older: " + Is_30andolder() ;
             txtDisp.Text = rWinner;
         }
 
-        
+        private void btnAdd_Click(object sender, RoutedEventArgs e)
+        {
+            if (!(txtAge.Text.Equals(null) || txtName.Text.Equals(null) || txtTimeMin.Text.Equals(null) || txtTimeSec.Text.Equals(null) || int.TryParse(txtTimeMin.Text, out int res) == false
+                || int.TryParse(txtTimeSec.Text, out int res1) == false || int.TryParse(txtAge.Text, out int res2) == false || int.Parse(txtTimeSec.Text) > 60))
+            {
+
+
+                Runner rn = new Runner();
+                rn.setRunner(txtName.Text, int.Parse(txtTimeMin.Text), int.Parse(txtTimeSec.Text), int.Parse(txtAge.Text));
+                EnteredRunner.Add(rn.RunnerName, rn);
+                txtName.Text = "";
+                txtTimeMin.Text = "";
+                txtTimeSec.Text = "";
+                txtAge.Text = "";
+            }
+            else
+            {
+                MessageBox.Show("There was an Error. Please check values you have entered.");
+            }
+        }
+
+        private void btnShowRunners_Click(object sender, RoutedEventArgs e)
+        {
+
+            Runner[] run = sortLst();
+            string TxtDisplay = "";
+            for (int i = 0; i < run.Length; i++)
+            {
+                TxtDisplay += run[i].RunnerName + "\n";
+            }
+            txtDisp.Text = TxtDisplay;
+        }
     }
 
 }
